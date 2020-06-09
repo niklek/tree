@@ -17,6 +17,22 @@ func printBar(last bool) string {
 	return "├──"
 }
 
+// Checks whether we need to skip the item or not based on flags
+func skipItem(fi os.FileInfo, listAll bool, listDir bool) bool {
+	if listDir && fi.Mode().IsRegular() {
+		return true
+	}
+
+	if !listAll {
+		name := fi.Name()
+		if len(name) > 1 && name[:1] == "." {
+			return true
+		}
+	}
+
+	return false
+}
+
 const pathDefault = "."
 
 func main() {
@@ -52,7 +68,7 @@ func main() {
 			break
 		}
 		// when only directories
-		if listDir && fi.Mode().IsRegular() {
+		if skipItem(fi, listAll, listDir) {
 			continue
 		}
 		// get child items if the item is a directory
@@ -65,7 +81,7 @@ func main() {
 
 			for k, file := range files {
 				// when only directories
-				if listDir && file.Mode().IsRegular() {
+				if skipItem(fi, listAll, listDir) {
 					continue
 				}
 				// build full path for the child item
