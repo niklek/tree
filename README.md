@@ -15,6 +15,7 @@ Usage of ./tree:
 ```
 
 ### Example
+Prints the structure of `testdata` directory.
 
 ```
 ./tree -a testdata
@@ -29,8 +30,25 @@ Usage of ./tree:
     |       └──images
     |           └──go-logo-blue.svg
     ├──index.html
-    ├──doc
-    |   └──file.txt
-    └──.DS_Store
+    └──doc
+        └──file.txt
 ```
 
+### Example with sizes
+Very basic for now.
+```
+./tree -a -s testdata
+└──testdata (192 bytes)
+    ├──pkg (96 bytes)
+    |   └──file.txt (14 bytes)
+    ├──lib (96 bytes)
+    |   └──godoc (192 bytes)
+    |       ├──style.css (161 bytes)
+    |       ├──playground.js (158 bytes)
+    |       ├──jquery.js (52 bytes)
+    |       └──images (96 bytes)
+    |           └──go-logo-blue.svg (1472 bytes)
+    ├──index.html (131 bytes)
+    └──doc (96 bytes)
+        └──file.txt (14 bytes)
+```
