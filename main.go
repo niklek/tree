@@ -2,6 +2,7 @@
 package main
 
 import (
+	"flag"
 	"fmt"
 	"io/ioutil"
 	"log"
@@ -16,18 +17,28 @@ func printBar(last bool) string {
 	return "├──"
 }
 
-func main() {
-	var path, fullPath, prefix string
+const pathDefault = "."
 
-	path = "." // default path
-	if len(os.Args) >= 2 {
-		path = os.Args[1]
+func main() {
+	var (
+		listAll, listDir, printSize bool
+		path, fullPath, prefix      string
+	)
+	flag.BoolVar(&listAll, "a", false, "List all files")
+	flag.BoolVar(&listDir, "d", false, "List directories only")
+	flag.BoolVar(&printSize, "s", false, "Print the size for each line")
+	flag.Parse()
+
+	// get path or use default
+	args := flag.Args()
+	path = pathDefault
+	if len(args) > 0 {
+		path = args[0]
 	}
-	prefix = ""
 
 	// Create a stack and push the root item
 	var s Stack
-	s.Push(&item{path, prefix, true})
+	s.Push(&item{path, "", true})
 
 	for s.Size() > 0 {
 		it := s.Pop()
@@ -40,6 +51,10 @@ func main() {
 			log.Println(err)
 			break
 		}
+		// when only directories
+		if listDir && fi.Mode().IsRegular() {
+			continue
+		}
 		// get child items if the item is a directory
 		if fi.IsDir() {
 			files, err := ioutil.ReadDir(it.path)
@@ -49,6 +64,10 @@ func main() {
 			}
 
 			for k, file := range files {
+				// when only directories
+				if listDir && file.Mode().IsRegular() {
+					continue
+				}
 				// build full path for the child item
 				fullPath = it.path + string(os.PathSeparator) + file.Name()
 				// extend graphic prefix for the child item based on parent
