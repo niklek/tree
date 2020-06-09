@@ -33,16 +33,26 @@ func skipItem(fi os.FileInfo, listAll bool, listDir bool) bool {
 	return false
 }
 
+// Returns a string with file/direcrory size in bytes
+// When the flag is false will return an empty string
+func printSize(fi os.FileInfo, displaySize bool) string {
+	if !displaySize {
+		return ""
+	}
+
+	return fmt.Sprintf(" (%d bytes)", fi.Size())
+}
+
 const pathDefault = "."
 
 func main() {
 	var (
-		listAll, listDir, printSize bool
-		path, fullPath, prefix      string
+		listAll, listDir, displaySize bool
+		path, fullPath, prefix        string
 	)
 	flag.BoolVar(&listAll, "a", false, "List all files")
 	flag.BoolVar(&listDir, "d", false, "List directories only")
-	flag.BoolVar(&printSize, "s", false, "Print the size for each line")
+	flag.BoolVar(&displaySize, "s", false, "Print the size for each line")
 	flag.Parse()
 
 	// get path or use default
@@ -101,6 +111,6 @@ func main() {
 		}
 
 		// print the current item
-		fmt.Printf("%s%s%s\n", it.prefix, printBar(it.isLast), fi.Name())
+		fmt.Printf("%s%s%s%s\n", it.prefix, printBar(it.isLast), fi.Name(), printSize(fi, displaySize))
 	}
 }
