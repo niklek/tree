@@ -20,6 +20,7 @@ const resultTestdataAll = `└──testdata (192 bytes)
         └──file.txt (14 bytes)
 `
 
+// Test listing testdata directory, including sizes
 func TestTestdataAll(t *testing.T) {
 	out := new(bytes.Buffer)
 	err := listPath(out, "testdata", true, false, true)
