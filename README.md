@@ -6,5 +6,31 @@ It uses a stack and DFS algorithm to traverse the directory structure.
 
 ## Usage
 
+```
+./tree --help
+Usage of ./tree:
+  -a    List all files
+  -d    List directories only
+  -s    Print the size for each line
+```
 
+### Example
+
+```
+./tree -a testdata
+└──testdata
+    ├──pkg
+    |   └──file.txt
+    ├──lib
+    |   └──godoc
+    |       ├──style.css
+    |       ├──playground.js
+    |       ├──jquery.js
+    |       └──images
+    |           └──go-logo-blue.svg
+    ├──index.html
+    ├──doc
+    |   └──file.txt
+    └──.DS_Store
+```
 
