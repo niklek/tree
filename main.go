@@ -76,8 +76,7 @@ func listPath(out *bytes.Buffer, path string, listAll bool, listDir bool, displa
 		if fi.IsDir() {
 			files, err := ioutil.ReadDir(it.path)
 			if err != nil {
-				log.Println(err)
-				break
+				return err
 			}
 
 			for k, file := range files {
